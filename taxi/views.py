@@ -51,7 +51,7 @@ class ManufacturerListView(LoginRequiredMixin, generic.ListView):
         return context
 
     def get_queryset(self):
-        queryset = Manufacturer.objects.all()
+        queryset = super().get_queryset()
         name = self.request.GET.get("name")
         if name:
             return Manufacturer.objects.filter(name__icontains=name)
@@ -81,7 +81,7 @@ class CarListView(LoginRequiredMixin, generic.ListView):
     queryset = Car.objects.select_related("manufacturer")
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(CarListView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         model = self.request.GET.get("model", "")
         context["search_form"] = CarSearchForm(initial={"model": model})
         return context
